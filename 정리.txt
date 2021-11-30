@@ -1,0 +1,471 @@
+
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+> c# 문법 - 현재 visualstudio 버전과 맞지 않는다.
+https://afsdzvcx123.tistory.com/entry/C-%EB%AC%B8%EB%B2%95-Reflection-Class-Property-%EA%B0%9C%EC%88%98-%ED%99%95%EC%9D%B8-%EB%B0%8F-%EB%B0%98%EB%B3%B5%EB%AC%B8-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0?category=784688
+
+> 쿼리 - 유니티
+https://coderzero.tistory.com/entry/%EC%9C%A0%EB%8B%88%ED%8B%B0-C-%EA%B0%95%EC%A2%8C-22-%EB%A7%81%ED%81%ACLINQ-Language-Integrated-Query
+
+> mathf 등 정리
+(1)
+https://orcacode.tistory.com/entry/Unity%ED%95%A0-%EB%95%8C-%EC%99%B8%EC%9B%8C%EB%91%90%EB%A9%B4-%EC%9C%A0%EC%9A%A9%ED%95%9C-Mathf-%ED%95%A8%EC%88%98%EB%93%A4
+(2)
+https://neighboringub.blogspot.com/2019/01/unity-camera-move-and-clamp.html
+
+> input field에서 tap으로 커서 움직임
+https://sagacityjang.tistory.com/m/82
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶 카메라 추적
+✔카메라를 마우스를 추적하여 좌우로만 움직이는 법
+void LateUpdate(){
+    transform.Rotate(0, Input.GetAxis("Mouse X") * mouse_speedX, 0);
+}
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+✔
+        #region 카메라
+        //Vector3 pos = UnityEngine.Camera.main.WorldToViewportPoint(dog.transform.position);
+
+        //if (pos.x < 0.2f) { pos.x = 0.2f;}
+
+        //if (pos.x > 0.8f) { pos.x = 0.8f;}
+
+        //if (pos.y < 0.2f)
+        //{
+        //    pos.y = 0.2f;        
+        //}
+
+        //if (pos.y > 0.8f) { pos.y = 0.8f; }
+
+        //dog.transform.position = UnityEngine.Camera.main.ViewportToWorldPoint(pos);
+
+        #endregion
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶Canvas
+
+Screen Space - Overlay: 캔버스가 화면을 채우고 캔버스의 모든 UI 요소가 나머지 항목 위에 렌더링되는 모드
+
+Screen Space - Camera: 캔버스가 화면을 채우지만, 특정 카메라로 렌더링되고 카메라의 거리에 영향을 받는 모드
+
+World Space: 씬에 UI가 있으며 다른 오브젝트의 앞이나 뒤에 렌더링되는 모드(예: 3D 월드에서 캐릭터 위에 표시되는 이름 태그)
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖ 
+🔶list
+✔list - 특정 값 인덱스 번호 찾기
+int idx =  list.FindIndex(a => a.Contains(string));
+
+✔list - insert : 삽입, 밀어넣기
+
+list명.insert(int, value);
+int 형 뒤에 value 삽입
+
+✔ list - contains : 리스트 안에 값 찾기
+
+static void Main()
+{
+    string[] src = { "aaa", "bbb", "ccc" };
+    var list = new List<string>();
+    list.AddRange(src);
+    string item = "aaa";
+
+    if (list.Contains(item))
+    {
+        Console.WriteLine("{0}을 찾았습니다.", item);
+    }
+    else
+    {
+        Console.WriteLine("{0}을 찾지 못했습니다.", item);
+    }
+
+    Console.ReadKey();
+}
+
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶튜플(복수 리턴)
+
+- 메서드로부터 복수 개의 값들을 리턴
+
+	>>일반 C#
+(int cnt, int sum, double avg )Calculate(List<int> data) //튜플 리턴 타입
+{
+	int cnt = 0, sum = 0;
+	double avg = 0;
+
+	foreach(var i in data)
+	{
+		cnt ++;
+		sum+=1;
+	}
+	
+	avg = sum/ cnt;
+	
+	return (cnt, sum,avg);
+}
+
+private void run(){
+	var list = new List<int>{1,2,3,4,5};
+
+	var r = Calculate(list);
+	Console.WriteLine($"{r.cnt},{r.sum},{r.avg}");
+	Console.WriteLine($"{r.Item1},{r.Item2},{r.Item3}");
+}
+
+	>>유니티 C#
+
+   void Start()
+    {
+        var temp = TupleTest("슬깃", 20);
+        Debug.Log("이름 : " + temp.name);
+        Debug.Log("나이 : " + temp.age);
+	
+	//이름, 나이의 메서드가 하나로 처리 가능
+	//name과 age에서 temp를 뺐을때, 값은 같으나 2개의 변수로 따로 받게 된다.
+    }
+ 
+    (string name, int age) TupleTest(string name, int age)
+    {
+        return (name, age);
+    }
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶현재 호출되는 메소드 명/ 함수명 가져오기
+using System.Reflection;
+
+string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶    json 
+
+using System.IO; //저장과 로드 시 필수
+
+	> 선언) 저장 함수
+private SaveData saveData = new SaveData();
+private string loadJson, ingameName;
+(일반 저장)
+saveData.petName.Add(pet.name);
+string json = JsonUtility.ToJson(saveData); // 제이슨화
+//
+File.WriteAllText(Application.dataPath + "/infoData.json", json); //파일 생성
+
+>> 파일 경로 표시 중요 <!>
+1. Application.persistentDataPath : C:\Users\사용자이름\AppData\LocalLow\회사이름 
+
+2. Application.streamingAssetsPath : 해당 프로젝트폴더 경로\Assets 
+
+3. Application.dataPath : 해당 프로젝트폴더
+>>
+
+
+	> 선언) 로드 함수
+private SaveData saveData = new SaveData();
+
+loadJson = File.ReadAllText(Application.dataPath + "/infoData");
+saveData = JsonUtility.FromJson<SaveData>(loadJson);
+
+for (int i = 0; i < saveData.ingameName.Count; i++)
+{
+     ingameName = saveData.ingameName[i];
+}
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶 Vector3 
+
+✔ 두 벡터의 각도 구하기
+(다만 Acos을  했을 때 나오는 값은 라디안 값이므로 Mathf.Rad2Deg 를 곱해주면 디그리 값을 얻을 수 있다.
+내적으로 각도를 구하기 때문에 나오는 각도는 0~180도 이다.)
+
+float Dot = Vector3.Dot(A,B);
+float Angle = Mathf.Acos(Dot);
+
+
+✔ 범위 지정
+- clamp는 고정시키는 것, int float 두가지
+	
+	> ex1
+ transform.position = new Vector3(Mathf.Clamp(Time.time, 1.0F, 3.0F), 0, 0);
+(float value, float min, float max);
+
+	> ex2
+float a = Mathf.Clamp(Time.time, 1.0F, 3.0F);
+transform.position = new Vector3(a,b,c);
+
+✔ 레이케스트 히트
+
+//레이캐스트 과정
+if (Physics.Raycast(transform.position, transform.forward, out hit, MaxDistance))
+if (Physics.Raycast(Ray 원점, Ray 방향, 충돌 감지할 RaycastHit, Ray 거리(길이))
+
+//레이 확인용 로그
+Debug.DrawRay(transform.position, transform.forward * MaxDistance, Color.blue, 0.3f);
+
+//충돌 감지 후 변경(예: 색 변경)
+hit.transform.GetComponent<MeshRenderer>().material.color = Color.red; 
+
+
+✔ 초기화 방법(a,b,c = float)
+
+1. Vector3.zero 프로퍼티로 초기화하기
+{
+	Vector3 vec = Vector3.zero; //Vector3(0, 0, 0);
+}
+
+2. 벡터는 메소드를 포함하고 있는 구조체이므로 생성자를 이용해 값을 할당 받을 때는 new로 할당 한다.
+{
+	Vector3 vec = new Vector3(a, b, c);
+}
+
+3. Set() 메소드를 이용해 초기화하기
+{
+	Vector3 vec.Set(a, b, c);
+}
+
+4. 벡터값은 개별적으로 각 원소에 접근과 수정이 가능하다.
+{
+	Vector3 vec = Vector3(5, 9, 2);
+	vec.x = a
+	vec.y = b;
+	vec.z = c;
+}
+
+
+✔곱해주는 수를 벡터의 크기를 변경한다. (Scalar)
+V = (1, 5, 2)
+3V = 3(1, 5, 2) = (3, 15, 6)
+-------------------------------------------------------------------->>
+> 스칼라
+1. 곱 구하기 
+스칼라는 벡터의 크기만을 갖는 물리량이다.벡터에 스칼라 곱을 하면 각각 x, y, z원소의 값에 값(스칼라)을 곱하는 것이며, 스칼라 곱은 벡터의 크기를 변경할 수 있어도 벡터의 방향은 변경할 수 없다. 절댓값으로 크기만 갖는다.
+
+스칼라 값을 이용하여 거리, 속력, 가속력, 벡터의 내적(Dot Product)을 구할 수 있다.
+
+2. 유니티에서 스칼라 곱구하기
+:벡터에 배수를 취한다.
+
+Vector3 * 스칼라값;
+------------------------------------------------------------------->>
+
+✔- 자주 사용하는 벡터값
+
+(1, 0, 0): Vector3.right
+
+(-1, 0, 0): Vector3.left
+
+(0, 1, 0): Vector3.up
+
+(0, -1, 0): Vector3.down
+
+(0, 0, 1): Vector3.forward
+
+(0, 0, -1): Vector3.back
+
+(1, 1, 1): Vector3.one
+
+(0, 0, 0): Vector3.zero
+
+new Vector3 (a, b, c): 새로운 벡터 선언
+
+✔벡터의 길이 반환 (Magnitude)
+
+✔두 거리를 비교하는 용도로 정확한 거리측정이 필요없다. (sqrMagnitude)
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+🔶포스트 프로세싱
+- 사진에 필터를 적용하듯이 게임 이미지를 화면에 렌더링하기 전에 필터 및 효과를 적용하는 작업입니다. 
+> Unity에서 포스트 프로세싱 작동방법
+일반적으로 포스트 프로세싱 효과는 그룹화되어 게임 월드에서 다양한 영역에 사용됩니다. 즉, 카메라가 특정 영역을 비추고 있을 때, 지정된 프로세스의 조합이 이미지에 적용됩니다.
+
+ex)
+어두운 방 안에서 문을 통과해 밝은 곳으로 걸어 나온다고 가정해 봅시다. 방에서 나온 후 눈은 밝은 곳에 적응하는 데 시간이 걸리며 모든 것이 평소보다 더 밝게 보입니다. Unity에서는 방 안과 밖에 서로 다른 포스트 프로세스 그룹을 만들어 이러한 상황을 시뮬레이션할 수 있습니다. 
+
+포스트 프로세스의 그룹은 포스트 프로세싱 프로필(Post-processing Profile)이라 불리는 에셋입니다. 
+프로필이 할당된 게임 월드의 영역은 포스트 프로세스 볼륨(Post Process Volume)이라 불리는 컴포넌트입니다.
+카메라마다 서로 다른 포스트 프로세스가 포함될 때도 있습니다. 특정 카메라에 프로세스 조합을 연결하려면 Post Process Layer 컴포넌트를 Camera 컴포넌트가 포함된 게임 오브젝트에 추가합니다. 레이어를 사용하면 동작 별로 게임 오브젝트를 구성할 수 있습니다.
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+🔶
+✔animator isintransition   [string]
+
+> 트랜지션 이름으로 확인
+
+   currentTransition = anim.GetAnimatorTransitionInfo(0);
+ 
+         if(currentTransition.IsName("Run -> Attack"))
+         {
+             Debug.Log("Attack transition");
+         }
+
+
+✔AnimatorTransitionInfo.nameHash  [string]
+
+> 
+ex)1
+if(animator.GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("레이어명.State명"))
+{
+// 현재 수행중인 애니메이션 State 체크후 작업할 내용
+}
+
+>>>>>>>>
+if(animator.GetCurrentAnimatorStateInfo(0).nameHash == Animator.StringToHash("Base Layer.walk"))
+{
+// 현재 수행중인 애니메이션 State 체크후 작업할 내용
+}
+
+
+
+🤢🤢🤢🤢🤢🤢🤢🤢🤢🤢
+✔AnimatorTransitionInfo.IsUserName  [bool]
+
+> ??
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+✔ johnlemon horror - tutorial
+
+> aimator - trigger 파라미터는 값을 갖지 않는 특별한 형태의 파라미터이며, 한 애니메이션에서 다른 애니메이션으로의 변환을 유발합니다.  
+
+>aimator - transition - inspector - Has Exit Time이 참인 경우(체크박스가 활성화됨), 일정 시간이 지나면 전환이 자동으로 수행되고 상태 머신은 다음 상태를 플레이합니다. 
+
+>애니메이션은 특정 계층 내에서 모든 게임 오브젝트를 이동하고 회전하는 데 사용됩니다.
+
+> 계층의 부모 게임 오브젝트에는 부모가 없기 때문에 움직임에 영향을 받지 않습니다. 이 부모 게임 오브젝트는 Root라고도 불리며, 이 오브젝트의 움직임을 Root Motion이라고 부릅니다.
+
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+✔ AnimationState.normalizedTime
+>>표준화된(normalized) 애니메이션 시간
+값 1은 애니메이션의 끝을 의미한다. 값 0.5는 애니메이션의 중간을 의미합니다.
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+✔ Camera.WorldToViewportPoint  :  /position/을 ​​월드 좌표에서 뷰포트 좌표로 변환합니다.
+> 뷰포트 좌표는 0~1로 이루어져있다.
+
+Vector3 pos = UnityEngine.Camera.main.WorldToViewportPoint(dog.transform.position);
+- 카메라 안에서 dog의 위치
+
+dog.transform.position = UnityEngine.Camera.main.ViewportToWorldPoint(pos);
+- 개의 위치를 카메라 내의 pos 위치로 옮기기
+
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+✔ 콜백 함수 - ui 버튼으로 많이 씀 / delegate와 함께
+이벤트, 버튼을 눌렀을때 count ++ or 슬라이더의 값이 바뀔때 slider value 값 변화
+
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+✔> #region ~  #endregion
+>> 주석 대신 필드를 나누는데 사용!
+
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+✔ delegate(대리자)는 메서드 파라미터와 리턴 타입에 대한 정의를 한 후, 동일한 파라미터와 리턴 타입을 가진 메서드를 서로 호환해서 불러 쓸 수 있는 기능
+
+> c++ 포인터와 비슷 : 함수의 주소를 나타낸다?
+
+	> 선언1 (unity)
+
+delegate 타입 변수명(value); // class 밖에서 선언
+
+- class
+
+start(){
+다른 변수명 = new 변수명(new value); //new value는 변수
+다른 변수명2 = new 변수명(new value2);
+다른 변수명3 = new 변수명(new value3);
+
+Debug.Log(다른 변수 명(입력값));
+Debug.Log(다른 변수 명2(입력값));
+Debug.Log(다른 변수 명3(입력값));
+}
+
+타입 new value(타입 value){
+return value + 10;
+}
+타입 new value2(타입 value){
+return value - 10;
+}
+타입 new value3(타입 value){
+return value * 10;
+}
+
+	> 선언2 (+-) > 모든 함수가 넣어진 순서대로 실행 된다.
+delegate 타입 변수명(value); // class 밖에서 선언
+
+- class
+
+start(){
+다른 변수명 =  new 변수명(new value); //new value는 변수
+다른 변수명 += new value2; // 새로 등록
+다른 변수명 -= new value2; // 등록된 것 빼기
+다른 변수명 += new value3; 
+
+Debug.Log(입력값);
+}
+
+void new value(타입 value){
+Debug.Log(value + 10);
+}
+void new value2(타입 value){
+Debug.Log(value - 10);
+}
+void new value3(타입 value){
+Debug.Log(value * 10);
+}
+
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+✔ C#에서는 struct(구조체)를 사용하면 Value Type을 만들고, class 를 사용하면 Reference Type을 만든다.
+ - 구조체는 상속이 불가능 하다.
+
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+✔ get set
+
+> get 접근자에 대한 코드 블록은 속성을 읽을 때 실행. (호출 시 실행)
+//get -> return 변수
+
+> set 접근자에 대한 코드 블록은 속성에 새로운 값을 할당시킬 때 실행.
+//set -> 조건식을 이용해 값 분별 후 변수에 값 넣기
+
+	> 선언)
+class myclass
+public int num1{set; get;}
+public int num2{set; get;}
+public int sum{ get {return num1 + num2}} // 읽기전용
+
+static void main(){
+myclass class = new myclass(num1 = 10);
+
+class.num2 = 20;
+console.writeline(class.sum);
+}
+
+	>> 선언) 시작할때 변수에 값 받기
+
+int coin;
+private void setCoin(int value){
+coin = value;
+}
+
+public int getCoin(){
+return coin;
+}
+
+
+	>>프로퍼티 사용
+
+int coin;
+public int Coin(){
+get{return coin;}
+set{coint = value;}
+}
+ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖ ➖➖➖➖
+
+
+
+#튜플 # 풀링
